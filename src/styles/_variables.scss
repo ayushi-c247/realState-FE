@@ -1,0 +1,107 @@
+// styles/_variables.scss
+$primary-gradient: linear-gradient(90deg, #ff9a00 0%, #ffcd00 100%);
+$primary-color: #1a73e8;
+$link-color: #43acff;
+$secondary-color: #ff9800;
+$background-color: #f9f9f9;
+$background-color1: #f9f9f9;
+$text-color: #64748b;
+$copyright-color: #b1b9c5;
+$body-color: #081021;
+$label-color: #081021;
+$border-color: #efebf1;
+$border-color1: #fffbca;
+$border-color2: #e0d6f5;
+$white-color: #ffffff;
+$sidebar-bg: #fcfbfc;
+$toggle-border: #e2d5e9;
+$toggle-icon: #5c3b74;
+$icon-box-color: #fffaf2;
+$app-shell-header: 30px;
+$black-color: #000000;
+$active-color: #ff9a00;
+$default-color: #fffdfa;
+$pagination-active: #fcfbfc;
+$modal-header: #f7f5f8;
+$tab-color: #5c3b741a;
+$status-color: #14ae5c;
+$status-active: #ebffee;
+$error-color: #ea3535;
+$error-outline-color: #ffebeb;
+$modal-header: #f7f5f8;
+$shape-gradient: #ffcd00;
+$active-color: #ff9a00;
+$default-color: #fffdfa;
+$pagination-active-bg: #fcfbfc;
+$error-color: #ea3535;
+$error-outline-color: #ffebeb;
+$ivory-glow-color: "#fffdfa";
+$perl-white: "#fffaf2";
+$amethyst-glow: #7a5690;
+$secondry-sixty: #e2e8f0;
+$secondry-eighty: #8390a2;
+$purple-light: "#FEF3FF";
+$cotton-candy: "#FCD6FF";
+$review-bg: "#FFFBEB";
+$review-color: "#BF6A02";
+
+// box-shadow
+$box-shadow: 0 6px 0 0 rgba(92, 59, 116, 0.1);
+$box-shadow1: 0px 6px 0px 0px rgba(255, 154, 0, 0.1);
+$box-shadow2: 0px 2px 0px 0px rgba(255, 154, 0, 0.1);
+$box-shadow3: 0px 6px 0px 0px rgba(92, 59, 116, 0.1);
+$box-shadow4: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+$box-shadow5: 0px 0.7px 2.8px 0px rgba(14, 17, 74, 0.12);
+$box-shadow6: 0px 6px 0px 0px rgba(122, 86, 144, 0.1);
+$box-shadow7: 0px 4px 1px 0px rgba(92, 59, 116, 0.1);
+$box-shadow8: 0px 6px 0px 0px rgba(246, 132, 255, 0.1);
+$box-shadow9: 0px 4px 12px 0px rgba(0, 0, 0, 0.1);
+$box-shadow10: 0px 4px 16px 0px rgba(255, 154, 0, 0.25);
+// font sizes
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-md: 1.125rem;
+$font-size-lg: 1.25rem;
+$font-size-xl: 1.5rem;
+// spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-12: 12px;
+$spacing-14: 14px;
+$spacing-20: 20px;
+
+// Padding
+$padding-xs: 4px;
+$padding-sm: 8px;
+$padding-md: 16px;
+$padding-lg: 24px;
+$padding-xl: 32px;
+$padding-xxl: 48px;
+
+// radius
+$radius-xs: 4px;
+$radius-sm: 6px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 24px;
+$radius-xxl: 56px;
+$radius-full: 100px;
+$radius-8: 8px;
+$radius-20: 20px;
+$radius-24: 24px;
+
+$input-min-height: 50px;
+$input-padding: 12px 16px;
+$input-font-size: 16px;
+$input-bg-color: #fff;
+$input-border-color: #ccc;
+$input-border-color-error: #fa5252;
+
+$sidebar-width-open: 300px;
+$sidebar-width-collapsed: 100px;
+
+$app-shell-header: 20px;

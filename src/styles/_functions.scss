@@ -1,0 +1,6 @@
+@function rem($px) {
+  @return calc($px / 16) * 1rem;
+}
+@function darken-color($color, $amount: 10%) {
+  @return darken($color, $amount);
+}

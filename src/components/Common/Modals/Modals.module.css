@@ -1,0 +1,44 @@
+.uploadContainer {
+    border: 2px dashed #ccc;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #f8fafd;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.upload-container.active {
+    border-color: #4caf50;
+}
+
+.browseButton {
+    background-color: #4caf50;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.orText,
+.dragText,
+.hintText {
+    margin-top: 8px;
+    color: #555;
+    font-size: 14px;
+}
+
+.hintText {
+    font-size: 12px;
+    color: #999;
+}
+
+.uploadImage {
+    align-items: center;
+    margin: auto;
+    margin-bottom: 21px;
+    display: flex;
+    justify-content: center;
+}
