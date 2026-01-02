@@ -1,7 +1,7 @@
 "use client";
 
 import React, { memo, useEffect, useState } from "react";
-import { Resolver, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { showNotification } from "@mantine/notifications";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
@@ -17,13 +17,12 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
-import yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 
+import { yupResolver } from "@hookform/resolvers/yup";
 import Loader from "@/components/Common/Loaders/Loader";
 import { USER_ROLE } from "@/constants";
+import { updateUserSchema } from "@/constants/validationSchemas/user";
 
-import { updateUserDetailSchema } from "@/constants/validationSchemas/user";
 import {
   useGetUserDetailsByIdQuery,
   useUpdatePasswordMutation,
@@ -31,13 +30,10 @@ import {
 } from "@/hooks/user/Details";
 import { useAuth } from "@/lib/Contexts/AuthProvider";
 
-import {
-  IChangePasswordFormValues,
-  IUpdatePassword,
-  IUpdateProfileFormValues,
-} from "@/types/Profile";
+import { IChangePasswordFormValues, IUpdatePassword } from "@/types/Profile";
 import { getToken } from "@/utils/tools/token-service";
 import { changePasswordValidationSchema } from "@/constants/validationSchemas/auth";
+import { IUpdateUserPayload } from "@/types/User/Details";
 
 // Initial values for password change form only
 const passwordInitialValues = {
@@ -70,36 +66,36 @@ function AccountSettings() {
     useUpdatePasswordMutation();
 
   const userDetails = data?.data;
-
+  const schema = updateUserSchema(tAccountSettings);
   const {
     register,
-    control,
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<Record<string, unknown>>({
+  } = useForm<IUpdateUserPayload>({
     mode: "all",
-    resolver: yupResolver(
-      updateUserDetailSchema as yup.ObjectSchema<IUpdateProfileFormValues>
-    ) as unknown as Resolver<Record<string, unknown>>,
+    resolver: yupResolver(schema),
+    defaultValues: {
+      first_name: userData?.first_name,
+      last_name: userData?.last_name,
+      email: userData?.email,
+    },
   });
 
   useEffect(() => {
     if (userDetails) {
-      setValue("first_name", userDetails.first_name || "");
-      setValue("last_name", userDetails.last_name || "");
-      setValue("email", userDetails.email || "");
+      setValue("first_name", userDetails.first_name ?? "");
+      setValue("last_name", userDetails.last_name ?? "");
+      setValue("email", userDetails.email ?? "");
     }
   }, [userDetails, setValue, userData?.role]);
 
-  const handleUpdateSubmit = async (formData: Record<string, unknown>) => {
+  const handleUpdateSubmit = async (formData: IUpdateUserPayload) => {
     try {
-      const email = userData?.email || userDetails?.email;
-      let payload: Record<string, unknown>;
-      const parentData = formData as unknown as IUpdateProfileFormValues;
-      payload = {
-        first_name: parentData.first_name,
-        last_name: parentData.last_name || "",
+      const email = userData?.email ?? userDetails?.email;
+      let payload = {
+        first_name: formData.first_name,
+        last_name: formData.last_name || "",
         email,
         role: userData?.role.toLowerCase(),
       };

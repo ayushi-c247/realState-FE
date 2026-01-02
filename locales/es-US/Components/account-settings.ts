@@ -45,23 +45,25 @@ const accountSettings = {
     },
   },
   validation: {
-    changePassword: {
-      newPassword: {
-        validation: {
-          required: "New password is required",
-          min: "Password must be at least 8 characters",
-          max: "Password cannot be more than 18 characters",
-          pattern:
-            "Password must contain at least one uppercase letter, one lowercase letter, and one special character",
-          notSameAsCurrent:
-            "New password must be different from current password",
-        },
+    confirmNewPassword: {
+      required: "Please enter confirm password",
+      match: "Passwords do not match",
+    },
+    user: {
+      firstName: {
+        required: "First name is required",
+        max: "First name must not exceed 50 characters",
+        noNumbers: "First name cannot contain numbers",
       },
-      confirmNewPassword: {
-        validation: {
-          required: "Please enter confirm password",
-          match: "Passwords do not match",
-        },
+      lastName: {
+        required: "Last name is required",
+        max: "Last name must not exceed 50 characters",
+        noNumbers: "Last name cannot contain numbers",
+      },
+      email: {
+        required: "Email is required",
+        max: "Email must not exceed 80 characters",
+        noSpaces: "Email cannot contain spaces",
       },
     },
   },

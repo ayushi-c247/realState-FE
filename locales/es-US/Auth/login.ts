@@ -1,3 +1,5 @@
+import { match } from "assert";
+
 const login = {
   title: "Login",
   heading: "Enter credentials to access the Real State online portal",
@@ -37,6 +39,19 @@ const login = {
         text: "A reset password link has been sent to your registerd email.",
         description: "You can follow that link to reset your password.",
       },
+    },
+  },
+  validation: {
+    email: {
+      required: "Please enter email",
+      match: "Email does not match",
+      invalid: "Please enter a valid email address",
+      space: "Email cannot contain spaces",
+    },
+    password: {
+      required: "Please enter password",
+      match: "Password does not match",
+      space: "Password cannot contain spaces",
     },
   },
 };

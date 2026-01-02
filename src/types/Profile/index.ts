@@ -1,10 +1,3 @@
-export interface IUpdateProfileFormValues {
-  first_name: string;
-  last_name: string;
-  email: string;
-  role: string;
-}
-
 export interface IChangePasswordFormValues {
   newPassword: string;
   confirmNewPassword: string;

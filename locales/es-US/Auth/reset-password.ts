@@ -27,9 +27,17 @@ const resetPassword = {
     errors: {
       general: "Password reset failed. Please try again.",
       unexpected: "An unexpected error occurred. Please try again.",
-      tokenInvalid: "Invalid or missing reset token. Please request a new password reset.",
+      tokenInvalid:
+        "Invalid or missing reset token. Please request a new password reset.",
       userDataFailed: "Failed to load user data. Please try again.",
-      networkError: "Network error. Please check your connection and try again.",
+      networkError:
+        "Network error. Please check your connection and try again.",
+    },
+  },
+  validation: {
+    confirmPassword: {
+      required: "Please enter confirm password",
+      match: "Passwords do not match",
     },
   },
 };

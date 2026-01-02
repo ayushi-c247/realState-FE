@@ -17,7 +17,6 @@ import { paths } from "@/routes";
 import { resetPasswordValidationSchema } from "@/constants/validationSchemas/auth";
 import { PasswordStrengthIndicator } from "../../Auth/PasswordStrengthIndicator";
 
-
 export const CreatePasswordForm = () => {
   const tAuth = useTranslations("resetPassword");
   const router = useRouter();
@@ -35,7 +34,7 @@ export const CreatePasswordForm = () => {
     watch,
     formState: { errors },
   } = useForm<IResetPasswordFormValues>({
-    resolver: yupResolver(resetPasswordValidationSchema),
+    resolver: yupResolver(resetPasswordValidationSchema(tAuth)),
     defaultValues: {
       password: "",
       confirmPassword: "",

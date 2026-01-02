@@ -90,7 +90,7 @@ export const ResetPasswordForm: React.FC = () => {
     watch,
     formState: { errors, isSubmitting },
   } = useForm<IResetPasswordFormValues>({
-    resolver: yupResolver(resetPasswordValidationSchema),
+    resolver: yupResolver(resetPasswordValidationSchema(tAuth)),
     defaultValues: {
       password: "",
       confirmPassword: "",

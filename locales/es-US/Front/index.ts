@@ -16,6 +16,7 @@ const Front = {
     successMessage: "Email Verified Successfully!",
     title: "Great to have you with us",
   },
+  passwordIndicatorText: "Strong password must contain:",
 };
 
 export default { Front };

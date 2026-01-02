@@ -49,5 +49,7 @@ export const NAME_REGEX = /^[A-Za-z ]+$/;
 
 // Basic email validation
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/* Password length */
 export const PASSWORD_MIN_LENGTH = 8;
 export const PASSWORD_MAX_LENGTH = 20;

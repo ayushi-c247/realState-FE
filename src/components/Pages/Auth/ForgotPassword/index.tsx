@@ -26,7 +26,7 @@ export default function ForgotPassword() {
   } = useForm<IForgotPasswordFormValues>({
     resolver: yupResolver(
       // Reuse login schema email rule only
-      loginValidationSchema.pick(["email"]) as any,
+      loginValidationSchema(t).pick(["email"]) as any,
     ),
     defaultValues: { email: "" },
   });

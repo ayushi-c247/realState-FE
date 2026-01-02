@@ -154,8 +154,7 @@ export default function UserList() {
     });
 
   // user status update
-  const { mutateAsync: updateUserStatus, isPending: isUpdatingStatus } =
-    useUpdateStatusMutation();
+  const { mutateAsync: updateUserStatus } = useUpdateStatusMutation();
   const { mutateAsync: deleteUser, isPending: isDeleting } =
     useDeleteUserMutation();
   const { mutateAsync: resendInvitation, isPending: isResendInvite } =
@@ -163,7 +162,7 @@ export default function UserList() {
   const showPagination = userAllData?.data?.total ?? 0;
 
   /** Columns for Investor Table */
-  const investorColumns = [
+  const columns = [
     {
       accessor: "name",
       title: tUserMangement("table.columns.title.fullName"),
@@ -195,7 +194,7 @@ export default function UserList() {
       render: (record: IUserList) => record.email,
     },
     {
-      accessor: "email",
+      accessor: "last_login_date",
       title: tUserMangement("table.columns.title.lastLogin"),
       sortable: true,
       render: (record: IUserList) => record.last_login_date ?? "-",
@@ -319,137 +318,12 @@ export default function UserList() {
     },
   ];
 
-  /** Columns for Agent Table */
-  const agentColumns = [
-    {
-      accessor: "name",
-      title: tUserMangement("table.columns.title.fullName"),
-      sortable: true,
-      width: 250,
-      render: (record: IUserList) => (
-        <Flex
-          gap={12}
-          align="center"
-          className="cursor-pointer"
-          onClick={() => handleViewDetails(record)}
-        >
-          <Text
-            fz={14}
-            fw={400}
-            c="var(--body-color)"
-            tt={"capitalize"}
-            lineClamp={2}
-          >
-            {getFormattedFullName(
-              record.first_name || "",
-              record.last_name || ""
-            )}
-          </Text>
-        </Flex>
-      ),
-    },
-    {
-      accessor: "email",
-      title: tUserMangement("table.columns.title.email"),
-      sortable: true,
-      render: (record: IUserList) => record.email || "-",
-    },
-    {
-      accessor: "status",
-      title: tUserMangement("table.columns.title.status"),
-      sortable: true,
-      width: "350",
-      textAlign: "center" as const,
-      render: (row: IUserList) => {
-        const isActive = row.status === "ACTIVE";
-        return (
-          <Menu>
-            <Menu.Target>
-              <Flex
-                justify="center"
-                align="center"
-                className={
-                  isActive ? "status-badge-active" : "status-badge-inactive"
-                }
-              >
-                {capitalize(row.status)}
-                <IconChevronDown size={14} style={{ marginLeft: 8 }} />
-              </Flex>
-            </Menu.Target>
-            <Menu.Dropdown miw={"180px"}>
-              {!isActive && (
-                <Menu.Item
-                  onClick={() => handleStatusChange("ACTIVE", row.id)}
-                  ta={"center"}
-                >
-                  {tUserMangement("table.columns.status.active")}
-                </Menu.Item>
-              )}
-              {isActive && (
-                <Menu.Item
-                  onClick={() => handleStatusChange("INACTIVE", row.id)}
-                  ta={"center"}
-                >
-                  {tUserMangement("table.columns.status.inactive")}
-                </Menu.Item>
-              )}
-            </Menu.Dropdown>
-          </Menu>
-        );
-      },
-    },
-    {
-      accessor: "actions",
-      title: tUserMangement("table.columns.title.actions"),
-      render: (record: IUserList) => (
-        <Menu shadow="md" position="bottom-end">
-          <Menu.Target>
-            <ActionIcon variant="subtle" color="gray">
-              <IconDotsVertical size={18} />
-            </ActionIcon>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item onClick={() => handleViewDetails(record)}>
-              <Box className="menu-item-content">
-                <IconEye size={20} />
-                <Text fz={14} fw={400}>
-                  {tUserMangement("table.columns.title.viewaction")}
-                </Text>
-              </Box>
-            </Menu.Item>
-            <Menu.Item
-              onClick={() => {
-                setSelectedUser(record as IUserList);
-                setIsEditUser(true);
-              }}
-            >
-              <Box className="menu-item-content">
-                <IconEdit size={20} />
-                <Text fz={14} fw={400}>
-                  {tUserMangement("table.columns.title.editaction")}
-                </Text>
-              </Box>
-            </Menu.Item>
-            <Menu.Item onClick={() => handleDelete(record.id, "Agent")}>
-              <Box className="menu-item-content">
-                <IconTrash size={20} />
-                <Text fz={14} fw={400}>
-                  {tUserMangement("table.columns.title.deleteaction")}
-                </Text>
-              </Box>
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-      ),
-    },
-  ];
-
   const getColumns = () => {
     switch (activeTab) {
       case INVESTOR_AGENT_TABS.INVESTOR:
-        return investorColumns;
+        return columns;
       case INVESTOR_AGENT_TABS.AGENT:
-        return agentColumns;
+        return columns;
       default:
         return [];
     }
@@ -682,9 +556,7 @@ export default function UserList() {
               return (
                 <>
                   <Controls.Text />
-
                   <Controls.PageSizeSelector />
-
                   {totalPages > 1 && (
                     <Group gap="xs">
                       <Text size={state.paginationSize}>
