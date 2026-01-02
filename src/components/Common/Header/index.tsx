@@ -10,7 +10,6 @@ import { useAuth } from "@/lib/Contexts/AuthProvider";
 import { paths } from "@/routes";
 import IconLogout from "../Icons/IconLogout";
 import IconSetting from "../Icons/IconSetting";
-import IconUser from "../Icons/IconUser";
 import { HeaderProps } from "@/types";
 
 function Header({ onToggleSidebar }: HeaderProps) {

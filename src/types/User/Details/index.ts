@@ -1,15 +1,3 @@
-export interface IUserTableRecord {
-  id: number;
-  email: string | null;
-  first_name: string | null;
-  last_name: string | null;
-  user_name: string | null;
-  role: "Investor" | "Agent" | string;
-  status: "ACTIVE" | "INACTIVE" | string;
-  // last_login_date: string;
-  created_at: string;
-  updated_at: string;
-}
 export interface IAddUser {
   first_name: string;
   last_name: string;
@@ -66,37 +54,11 @@ export interface IGetUserDetails {
     id: number;
     first_name: string;
     last_name: string;
-    user_name: string | null;
-    nickname: string | null;
-    display_name: string;
+    full_name: string;
     email: string;
     last_login_date: string | null;
-    dob: string | null;
-    country_id: number | null;
-    avatar_link: string | null;
-    status: "INACTIVE" | "ACTIVE" | string;
-    role: "CoParent" | "Parent" | "Admin" | string;
-    country: string | null;
-    childCount?: number | null;
-    user_relationships_user_id?: Array<{
-      relation_type: string;
-      related_user_id: number;
-      user_id: number;
-      related_user: {
-        id: number;
-        first_name: string;
-        last_name: string;
-        email: string;
-        display_name: string;
-        status: string;
-        role: string;
-        country_id?: number;
-        user_name?: string;
-        nickname?: string;
-        dob?: string;
-        age_group_id?: number;
-      };
-    }>;
+    status: string;
+    role: string;
   };
 }
 

@@ -8,14 +8,13 @@ import { useAuth } from "@/lib/Contexts/AuthProvider";
 import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import { paths } from "@/routes";
-import { USER_ROLE } from "@/constants";
+
 import { agentProfileSchema } from "@/constants/validationSchemas/user";
 
 export const AgentProfileForm = () => {
   const router = useRouter();
-  const { userData } = useAuth();
 
-  //   const { mutateAsync, isPending } = useCreateUserProfileMutation();
+  // const { mutateAsync, isPending } = useCreateUserProfileMutation();
 
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(agentProfileSchema),

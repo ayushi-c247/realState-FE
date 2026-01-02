@@ -1,13 +1,11 @@
 const login = {
   title: "Login",
-  heading: "Enter credentials to access the skillsome online portal",
+  heading: "Enter credentials to access the Real State online portal",
   forgotPasswordText: "Please enter your email to reset your password.",
   forgotPassword: "Forgot Password",
   signup: "Don't have an account? signup",
   forgotPasswordLoginLinkText: "Sign in",
   forgotPasswordLoginText: "Already have an account?",
-  childLoginText: "Are you a child user?",
-  parentLoginText: "Are you a parent user?",
   form: {
     title: "Login",
     email: {

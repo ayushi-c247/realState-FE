@@ -18,7 +18,6 @@ export interface ILoginResponse {
     email: string;
     role: string;
     full_name: string;
-    user_id: number;
     id: number;
     status: string;
   };
@@ -67,11 +66,6 @@ export type IAuthContextType = IAuthState & {
   unauthorize: () => void;
   isLoading: boolean;
 };
-
-export enum Step {
-  SendOtp = "sendOtp",
-  VerifyOtp = "verifyOtp",
-}
 
 export interface IResetPasswordFormValues {
   newPassword: string;

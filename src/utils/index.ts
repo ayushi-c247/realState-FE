@@ -1,14 +1,18 @@
+import * as yup from "yup";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import sanitizeHtml from "sanitize-html";
 import truncate from "truncate-html";
 
-import { DEFAULT_PAGINATION, USER_ROLE } from "@/constants";
+import {
+  DEFAULT_PAGINATION,
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+} from "@/constants";
 import { useState } from "react";
 import { useDebouncedValue } from "@mantine/hooks";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { HandleSearchChangeParams } from "@/types/Filters";
 import { SortState } from "@/types";
-import { paths } from "@/routes";
 
 export const htmlToText = (html: string) => {
   if (!html) return "";
@@ -409,4 +413,25 @@ export function formatPublishedDate(dateString?: string): string {
   return `${day} ${month}, ${year} | ${weekday}`;
 }
 
-
+export const passwordValidationRules = yup
+  .string()
+  .required("Password is required")
+  .test(
+    "no-space",
+    "Password must not contain spaces",
+    (value) => !/\s/.test(value || "")
+  )
+  .test("uppercase", "Password must contain an uppercase letter", (value) =>
+    /[A-Z]/.test(value || "")
+  )
+  .test("lowercase", "Password must contain a lowercase letter", (value) =>
+    /[a-z]/.test(value || "")
+  )
+  .test("number", "Password must contain a number", (value) =>
+    /[0-9]/.test(value || "")
+  )
+  .test("special", "Password must contain a special character", (value) =>
+    /[^A-Za-z0-9]/.test(value || "")
+  )
+  .min(PASSWORD_MIN_LENGTH, "Password must be at least 8 characters")
+  .max(PASSWORD_MAX_LENGTH, "Password must not exceed 20 characters");

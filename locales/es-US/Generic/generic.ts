@@ -10,7 +10,6 @@ const generic = {
     submit: "Submit",
     confirm: "Confirm",
     attempt: "Attempt {value}",
-    preview: "Preview {value}",
     update: "Update {value}",
     add: "Add {value}",
     filter: "Filter",
@@ -29,31 +28,11 @@ const generic = {
     verified: "Verified",
     unverified: "Unverified",
     ok: "OK",
-    draft: "Draft",
-    published: "Published",
   },
   header: {
     menu: {
       button: {
         Logout: "Logout",
-      },
-    },
-  },
-  messages: {
-    success: {
-      title: "Success",
-      description: "Your changes have been saved successfully.",
-    },
-    error: {
-      general: {
-        title: "Error",
-        label: "Unable to Load Instructions",
-        description: "Please try again later or contact support.",
-      },
-      invalidLink: {
-        title: "Error",
-        label: "Invalid or Expired Link",
-        description: "Please try again later or contact support.",
       },
     },
   },
@@ -64,23 +43,6 @@ const generic = {
     cancel: {
       text: "Cancel",
     },
-  },
-  file: {
-    browseText: {
-      text: "Browse File to import",
-    },
-    orText: {
-      text: "or",
-    },
-    dragText: {
-      text: "Drag and drop here",
-    },
-    limitText: {
-      text: " Maximum size limit of 5MB",
-    },
-  },
-  input: {
-    correctAnswerPlaceholder: "Correct Answer",
   },
   emptytable: {
     heading: "No Data Found",

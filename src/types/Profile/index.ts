@@ -3,8 +3,6 @@ export interface IUpdateProfileFormValues {
   last_name: string;
   email: string;
   role: string;
-  country_id?: number;
-  avatar_link?: string;
 }
 
 export interface IChangePasswordFormValues {

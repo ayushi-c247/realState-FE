@@ -25,7 +25,6 @@ const userManagement = {
         inactive: "Inactive",
         pending: "Pending",
       },
-      noRecordsText: "No expert records found",
     },
   },
   tabs: {

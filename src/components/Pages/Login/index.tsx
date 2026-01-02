@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { loginValidationSchema } from "@/constants/validationSchemas/adminAuth";
+import { loginValidationSchema } from "@/constants/validationSchemas/auth";
 import { useLoginMutation } from "@/hooks/auth/index";
 import { useAuth } from "@/lib/Contexts/AuthProvider";
 import { PATH_AUTH, paths } from "@/routes";

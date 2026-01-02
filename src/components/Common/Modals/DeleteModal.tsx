@@ -1,10 +1,10 @@
 "use client";
-import { Box, Button, Group, List, Modal, Paper, Text } from "@mantine/core";
+import { Box, Button, Group, List, Modal, Text } from "@mantine/core";
 
 import { useTranslations } from "next-intl";
 import React from "react";
 import { DeleteModalProps } from "@/types/Common";
-import IconTrash from "../Icons/IconTrash";
+import { IconTrash } from "@tabler/icons-react";
 
 export default function DeleteModal({
   opened,
@@ -55,7 +55,13 @@ export default function DeleteModal({
       </Box>
 
       {/* Title */}
-      <Text ta="center" fw={600} size={"var(--font-size-lg"} mb={8} c="var(--body-color)">
+      <Text
+        ta="center"
+        fw={600}
+        size={"var(--font-size-lg"}
+        mb={8}
+        c="var(--body-color)"
+      >
         {title || t("modal.delete.title")}
       </Text>
 
@@ -72,7 +78,9 @@ export default function DeleteModal({
 
       {/* Item Details Card */}
       {itemDetails && itemDetails.length > 0 && (
-        <Box style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+        <Box
+          style={{ display: "flex", justifyContent: "center", width: "100%" }}
+        >
           <Box className="delete-item">
             {itemDetails.map((detail, index) => (
               <Box
@@ -84,10 +92,20 @@ export default function DeleteModal({
                   alignItems: "flex-start",
                 }}
               >
-                <Text fw={500} fz={14} c="var(--body-color)" style={{ flexShrink: 0 }}>
+                <Text
+                  fw={500}
+                  fz={14}
+                  c="var(--body-color)"
+                  style={{ flexShrink: 0 }}
+                >
                   {detail.label} :
                 </Text>
-                <Text fw={400} fz={14} c="var(--body-color)" className="text-break">
+                <Text
+                  fw={400}
+                  fz={14}
+                  c="var(--body-color)"
+                  className="text-break"
+                >
                   {detail.value || "-"}
                 </Text>
               </Box>
@@ -107,7 +125,12 @@ export default function DeleteModal({
       )}
       {/* Action Buttons */}
       <Group justify="center" gap="md">
-        <Button variant="outline" className="outline-button" onClick={onCancel} disabled={loading}>
+        <Button
+          variant="outline"
+          className="outline-button"
+          onClick={onCancel}
+          disabled={loading}
+        >
           {cancelText || t("buttons.cancel")}
         </Button>
         <Button

@@ -4,14 +4,14 @@ export const USER_ROLE = {
   AGENT: "AGENET",
 } as const;
 
-// Add Parent Child Management Tab Constants
-export const ADD_PARENT_CHILD_TABS = {
-  INVESTOR: "Investor",
-  AGENT: "Agent",
+// Add Investor Agent Management Tab Constants
+export const INVESTOR_AGENT_TABS = {
+  INVESTOR: "investor",
+  AGENT: "agent",
 } as const;
 
-export type AddParentChildTab =
-  (typeof ADD_PARENT_CHILD_TABS)[keyof typeof ADD_PARENT_CHILD_TABS];
+export type InvestorAgentTab =
+  (typeof INVESTOR_AGENT_TABS)[keyof typeof INVESTOR_AGENT_TABS];
 
 export const UserStatus = {
   active: "ACTIVE",
@@ -49,3 +49,5 @@ export const NAME_REGEX = /^[A-Za-z ]+$/;
 
 // Basic email validation
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const PASSWORD_MIN_LENGTH = 8;
+export const PASSWORD_MAX_LENGTH = 20;

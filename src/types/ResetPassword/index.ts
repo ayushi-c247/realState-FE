@@ -40,3 +40,7 @@ export interface IActivateUserResponse {
     token: string;
   };
 }
+
+export interface PasswordStrengthIndicatorProps {
+  password: string;
+}

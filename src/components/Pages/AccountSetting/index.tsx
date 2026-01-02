@@ -1,13 +1,10 @@
 "use client";
 
-import React, { memo, useEffect, useRef, useState } from "react";
-import { Controller, Resolver, useForm } from "react-hook-form";
-import Select from "react-select";
+import React, { memo, useEffect, useState } from "react";
+import { Resolver, useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
-import { DateInput } from "@mantine/dates";
-import { useMediaQuery } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { IconEye, IconEyeOff, IconTrash } from "@tabler/icons-react";
+import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import {
   ActionIcon,
   Box,
@@ -17,18 +14,15 @@ import {
   Flex,
   Grid,
   GridCol,
-  Image,
-  InputLabel,
   Text,
   TextInput,
 } from "@mantine/core";
 import yup from "yup";
-
-import IconAdd from "@/components/Common/Icons/IconAdd";
 import { yupResolver } from "@hookform/resolvers/yup";
+
 import Loader from "@/components/Common/Loaders/Loader";
 import { USER_ROLE } from "@/constants";
-import { changePasswordValidationSchema } from "@/constants/validationSchemas/adminAuth";
+
 import { updateUserDetailSchema } from "@/constants/validationSchemas/user";
 import {
   useGetUserDetailsByIdQuery,
@@ -36,7 +30,6 @@ import {
   useUpdateUserMutation,
 } from "@/hooks/user/Details";
 import { useAuth } from "@/lib/Contexts/AuthProvider";
-import UserAvatar from "@/public/profile.svg";
 
 import {
   IChangePasswordFormValues,
@@ -44,6 +37,7 @@ import {
   IUpdateProfileFormValues,
 } from "@/types/Profile";
 import { getToken } from "@/utils/tools/token-service";
+import { changePasswordValidationSchema } from "@/constants/validationSchemas/auth";
 
 // Initial values for password change form only
 const passwordInitialValues = {
@@ -55,19 +49,9 @@ function AccountSettings() {
   const token = getToken();
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setCofirmPassword] = useState(false);
-  const [currentAvatarLink, setOriginalAvatarLink] = useState<string | null>(
-    null
-  );
-  const [avatarFile, stagedAvatarFile] = useState<File | null>(null);
-  const [avatarPreview, stagedAvatarPreview] = useState<string | null>(null);
-  const [avatarDelete, stagedAvatarDelete] = useState<boolean>(false);
-  const avatarInputRef = useRef<HTMLInputElement>(null);
-
   const t = useTranslations("Front");
   const tAccountSettings = useTranslations("accountSettings");
-  const isLg = useMediaQuery("(max-width: 991px)");
-
-  const { data, refetch, isLoading, error } = useGetUserDetailsByIdQuery({
+  const { data, isLoading, error } = useGetUserDetailsByIdQuery({
     id: userData?.id,
     role: USER_ROLE.ADMIN,
   });
@@ -78,7 +62,7 @@ function AccountSettings() {
     reset: resetPasswordForm, // Reset function for password form
   } = useForm<IChangePasswordFormValues>({
     defaultValues: passwordInitialValues,
-    resolver: yupResolver(changePasswordValidationSchema),
+    resolver: yupResolver(changePasswordValidationSchema(tAccountSettings)),
   });
   const { mutateAsync: updateUserDetails, isPending: isUpdatingStatus } =
     useUpdateUserMutation();
@@ -117,7 +101,6 @@ function AccountSettings() {
         first_name: parentData.first_name,
         last_name: parentData.last_name || "",
         email,
-        country_id: parentData?.country_id ?? Number(parentData.country_id),
         role: userData?.role.toLowerCase(),
       };
 

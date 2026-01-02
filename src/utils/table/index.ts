@@ -1,8 +1,6 @@
 import { TableHandlersProps } from "@/types";
-import { getNextSortState } from "./../index";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { DEFAULT_PAGINATION } from "@/constants";
-import { useState } from "react";
 
 /** Create reusable table handlers */
 export function getNextTableHandlers({
@@ -62,7 +60,9 @@ export const useListController = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const page = Number(searchParams.get("page") ?? DEFAULT_PAGINATION.page);
-  const pageSize = Number(searchParams.get("limit") ?? DEFAULT_PAGINATION.limit);
+  const pageSize = Number(
+    searchParams.get("limit") ?? DEFAULT_PAGINATION.limit
+  );
   const sortBy = searchParams.get("sortBy") || null;
   const sortOrder = (searchParams.get("sortOrder") as "asc" | "desc") || null;
   const search = searchParams.get("search") || "";
@@ -85,7 +85,8 @@ export const useListController = () => {
     updatePage: (v: number) => updateParams("page", v),
     updateLimit: (v: number) => updateParams("limit", v),
     updateSortBy: (v: string | null) => updateParams("sortBy", v || undefined),
-    updateSortOrder: (v: "asc" | "desc" | null) => updateParams("sortOrder", v || undefined),
+    updateSortOrder: (v: "asc" | "desc" | null) =>
+      updateParams("sortOrder", v || undefined),
     updateSearch: (v: string) => updateParams("search", v),
   };
 };

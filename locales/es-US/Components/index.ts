@@ -1,4 +1,4 @@
-import accountSettings from "./accountSettings";
+import accountSettings from "./account-settings";
 
 const Components = {
   ...accountSettings,

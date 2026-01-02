@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import {
   ActionIcon,
   Box,
@@ -46,15 +45,18 @@ import {
   getFormattedFullName,
   capitalize,
 } from "@/utils";
-import { FilterConfig } from "@/types/Filters";
+
 import SearchInput from "@/components/Common/SearchInput";
 import FilterBar from "@/components/Common/CommonFilter/CommonFilters";
 import { getNextTableHandlers, useListController } from "@/utils/table";
 import DataTableSkeleton from "@/components/Common/Loaders/DataTableSkeleton";
 
 import AddUser from "./AddUser";
+import { INVESTOR_AGENT_TABS, InvestorAgentTab } from "@/constants";
+import { getFilterConfig } from "@/utils/filters";
+import { FILETR_ENTITIES } from "@/constants/common";
 
-export default function UserList({ from }: { from: "investor" | "agent" }) {
+export default function UserList() {
   const tUserMangement = useTranslations("userManagement");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState({
@@ -63,29 +65,24 @@ export default function UserList({ from }: { from: "investor" | "agent" }) {
   });
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [userDetail, setUserDetail] = useState<IUserList | null>(null);
-  const [isEditCoParentOpen, setIsEditCoParentOpen] = useState(false);
-  const [selectedCoParent, setSelectedCoParent] = useState<IUserList | null>(
-    null
-  );
+  const [isEditUser, setIsEditUser] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<IUserList | null>(null);
   const searchParams = useSearchParams();
   const { page, pageSize } = useListController();
   const [filter, setFilter] = useState<Record<string, any>>({});
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const pathname = usePathname();
   const g = useTranslations("generic");
-  const initialTabFromUrl = searchParams.get("role") as
-    | "investor"
-    | "agent"
-    | null;
-  const defaultTab: "investor" | "agent" =
+  const initialTabFromUrl = searchParams.get("role") as InvestorAgentTab | null;
+  const defaultTab: InvestorAgentTab =
     initialTabFromUrl ||
     (pathname === paths.ROOT_INVESTOR_MANAGEMENT
-      ? "investor"
+      ? INVESTOR_AGENT_TABS.INVESTOR
       : pathname === paths.ROOT_AGENT_MANAGEMENT
-        ? "agent"
-        : "investor");
+        ? INVESTOR_AGENT_TABS.AGENT
+        : INVESTOR_AGENT_TABS.INVESTOR);
 
-  const [activeTab, setActiveTab] = useState<"agent" | "investor">(defaultTab);
+  const [activeTab, setActiveTab] = useState<InvestorAgentTab>(defaultTab);
 
   const router = useRouter();
 
@@ -137,24 +134,12 @@ export default function UserList({ from }: { from: "investor" | "agent" }) {
     return mapCommon[accessor] || "first_name";
   };
 
-  const tabToPath: Record<"agent" | "investor", string> = {
+  const tabToPath: Record<InvestorAgentTab, string> = {
     investor: paths.ROOT_INVESTOR_MANAGEMENT,
     agent: paths.ROOT_AGENT_MANAGEMENT,
   };
 
-  const filtersConfig: FilterConfig[] = [
-    {
-      key: "status",
-      label: "Status",
-      options: [
-        { label: "Active", value: "ACTIVE" },
-        { label: "Inactive", value: "INACTIVE" },
-        { label: "Pending", value: "PENDING" },
-      ],
-      valueType: "string",
-      selectType: "single",
-    },
-  ];
+  const filtersConfig = getFilterConfig(FILETR_ENTITIES.USER);
 
   const { data: userAllData, isPending: isUserListPending } =
     useGetAllUserDataQuery({
@@ -208,6 +193,12 @@ export default function UserList({ from }: { from: "investor" | "agent" }) {
       title: tUserMangement("table.columns.title.email"),
       sortable: true,
       render: (record: IUserList) => record.email,
+    },
+    {
+      accessor: "email",
+      title: tUserMangement("table.columns.title.lastLogin"),
+      sortable: true,
+      render: (record: IUserList) => record.last_login_date ?? "-",
     },
 
     {
@@ -428,8 +419,8 @@ export default function UserList({ from }: { from: "investor" | "agent" }) {
             </Menu.Item>
             <Menu.Item
               onClick={() => {
-                setSelectedCoParent(record as IUserList);
-                setIsEditCoParentOpen(true);
+                setSelectedUser(record as IUserList);
+                setIsEditUser(true);
               }}
             >
               <Box className="menu-item-content">
@@ -455,9 +446,9 @@ export default function UserList({ from }: { from: "investor" | "agent" }) {
 
   const getColumns = () => {
     switch (activeTab) {
-      case "investor":
+      case INVESTOR_AGENT_TABS.INVESTOR:
         return investorColumns;
-      case "agent":
+      case INVESTOR_AGENT_TABS.AGENT:
         return agentColumns;
       default:
         return [];
@@ -466,9 +457,9 @@ export default function UserList({ from }: { from: "investor" | "agent" }) {
 
   const getPlaceholder = () => {
     switch (activeTab) {
-      case "investor":
+      case INVESTOR_AGENT_TABS.INVESTOR:
         return tUserMangement("placeholders.investor");
-      case "agent":
+      case INVESTOR_AGENT_TABS.AGENT:
         return tUserMangement("placeholders.agent");
       default:
         return tUserMangement("placeholders.typeToSearch");
@@ -500,7 +491,7 @@ export default function UserList({ from }: { from: "investor" | "agent" }) {
   const handleTabChange = (tab: string | null) => {
     if (!tab) return; // handle null case
 
-    const typedTab = tab as "investor" | "agent"; // cast safely
+    const typedTab = tab as InvestorAgentTab;
     setActiveTab(typedTab);
 
     const query = new URLSearchParams();
@@ -604,7 +595,7 @@ export default function UserList({ from }: { from: "investor" | "agent" }) {
               className="gradiant-button"
               variant="gradient"
             >
-              {activeTab === "agent"
+              {activeTab === INVESTOR_AGENT_TABS.AGENT
                 ? tUserMangement("button.addAgent")
                 : tUserMangement("button.addInvestor")}
             </Button>
@@ -737,7 +728,7 @@ export default function UserList({ from }: { from: "investor" | "agent" }) {
           closeOnEscape={false}
           size="xl"
           title={
-            activeTab === "agent"
+            activeTab === INVESTOR_AGENT_TABS.AGENT
               ? tUserMangement("button.addAgent")
               : tUserMangement("button.addInvestor")
           }

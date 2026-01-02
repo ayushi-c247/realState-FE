@@ -38,19 +38,6 @@ export interface AdvancedSearchInputProps
   triggerOn?: TriggerMode;
 }
 
-export interface AsyncMultiSelectProps {
-  label?: string;
-  placeholder?: string;
-  value?: string[];
-  onChange?: (values: string[]) => void;
-  isDisabled?: boolean;
-  isClearable?: boolean;
-  initialData?: { value: string; label: string }[];
-  minSearchLength?: number;
-  debounceMs?: number;
-  dataType?: "tag" | "category" | "user" | "cluster";
-}
-
 export interface PaginationBarProps {
   page: number;
   pageSize: number;
