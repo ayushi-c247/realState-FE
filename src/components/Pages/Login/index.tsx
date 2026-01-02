@@ -34,7 +34,7 @@ export default function AdminLogin() {
     handleSubmit,
     formState: { errors },
   } = useForm<ILoginFormValues>({
-    resolver: yupResolver(loginValidationSchema),
+    resolver: yupResolver(loginValidationSchema(t)),
     defaultValues: { email: "", password: "" },
   });
 
