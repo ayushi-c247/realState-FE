@@ -1,0 +1,44 @@
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin respond($breakpoint) {
+  @if $breakpoint == sm {
+    @media (max-width: 576px) { @content; }
+  }
+  @else if $breakpoint == md {
+    @media (max-width: 767px) { @content; }
+  }
+  @else if $breakpoint == lg {
+    @media (max-width: 992px) { @content; }
+  }
+  @else if $breakpoint == xl {
+    @media (max-width: 1200px) { @content; }
+  }
+   @else if $breakpoint == xxl {
+    @media (max-width: 1400px) { @content; }
+  }
+}
+
+@mixin gradient-bg($from, $to) {
+  background: linear-gradient(135deg, $from, $to);
+}
+
+@mixin button($bg-color, $text-color: #fff) {
+  background-color: $bg-color;
+  color: $text-color;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-md;
+  border: none;
+  cursor: pointer;
+  font-size: $font-size-base;
+  font-weight: 500;
+  transition: 0.3s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
