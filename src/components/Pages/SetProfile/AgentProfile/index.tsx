@@ -12,6 +12,7 @@ import { paths } from "@/routes";
 import { agentProfileSchema } from "@/constants/validationSchemas/user";
 import { useAddAgentProfileMutation } from "@/hooks/user/Details";
 import { AgentProfileFormValues } from "@/types/User/Details";
+import { AgentApprovalStatusEnum } from "@/types/User";
 
 export const AgentProfileForm = () => {
   const router = useRouter();
@@ -27,20 +28,20 @@ export const AgentProfileForm = () => {
   );
 
   const onSubmit = async (data: AgentProfileFormValues) => {
-    console.log("data", data);
-
     try {
-      await addProfile({
+      const { message, data: response } = await addProfile({
         input: data,
       });
-
       showNotification({
         title: "Success",
-        message: "Agent profile created successfully",
+        message,
         color: "green",
       });
-
-      router.replace(paths.ROOT_DASHBOARD);
+      if (response?.approve_status === AgentApprovalStatusEnum.APPROVED) {
+        router.replace(paths.ROOT_DASHBOARD);
+        return;
+      }
+      router.replace(paths.ROOT_LOGIN);
     } catch (error: any) {
       showNotification({
         title: "Error",
@@ -75,9 +76,13 @@ export const AgentProfileForm = () => {
       <Box mt="xl">
         <Button
           type="submit"
+          variant="gradient"
           fullWidth
+          mt="xl"
           disabled={isPending}
-          loading={isPending}
+          className="gradiant-button"
+          radius="var(--radius-xxl)"
+          size="md"
         >
           {tUser("profile.saveAgentProfile")}
         </Button>

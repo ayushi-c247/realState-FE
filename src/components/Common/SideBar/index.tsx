@@ -289,7 +289,7 @@ export default function Sidebar({
             }}
           >
             <Image
-              src={_sidebarOpen ? "/real-state-logo.png" : "/BrandLogo.svg"}
+              src={_sidebarOpen ? "/real-state-logo.png" : "/real-state-logo.png"}
               alt="RealState Logo"
               width={_sidebarOpen ? 200 : 50}
               height={_sidebarOpen ? 100 : 50}

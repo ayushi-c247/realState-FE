@@ -57,7 +57,24 @@ export interface IUserDetailsID {
   id: number | null | undefined;
   role: string;
 }
+export interface IInvestorProfile {
+  user_id: number;
+  budget_min: string;
+  investment_horizon: string;
+  ownership_structure: string;
+  primary_objective: string;
+  country: string;
+  state: string;
+  preferred_property_types: string;
+  tourism_preferences: string;
+}
 
+export interface IAgentProfile {
+  user_id: number;
+  license_number?: string;
+  agency_name?: string;
+  company_name?: string;
+}
 export interface IGetUserDetails {
   success: boolean;
   message: string;
@@ -70,6 +87,8 @@ export interface IGetUserDetails {
     last_login_date: string | null;
     status: string;
     role: string;
+    investor_profile?: IInvestorProfile;
+    agent_profile?: IAgentProfile;
   };
 }
 
@@ -118,6 +137,7 @@ export interface AgentProfileFormValues {
   company_name: string;
   contact_number: string;
   license_number: string;
+  approve_status?: string;
 }
 export type BudgetUnit = "LAKH" | "CRORE";
 export type InvestorProfileFormValues = {

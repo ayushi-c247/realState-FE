@@ -17,6 +17,7 @@ import {
   IAuthState,
 } from "@/types/Login";
 import { getInitialState } from "@/utils/tools/token-service";
+import { USER_ROLE } from "@/constants";
 
 const initialState: IAuthState = {
   isAuthorized: !!getInitialState("token"),
@@ -71,7 +72,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [state, dispatch] = useReducer(authReducer, initialState);
   const pathname = usePathname();
   const prevPathname = useRef(pathname);
-  const { data: currentUser, isLoading, refetch } = useCurrentUserQuery();
+  const { data: currentUser, isLoading } = useCurrentUserQuery();
+
   useEffect(() => {
     if (currentUser?.data) {
       const userData: IAPIUser = {
@@ -82,6 +84,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         first_name: currentUser.data?.first_name,
         last_name: currentUser.data?.last_name,
         status: currentUser.data?.status ?? "",
+        ...(currentUser.data?.role === USER_ROLE.AGENT && {
+          agent_profile: currentUser?.data?.agent_profile,
+        }),
+        ...(currentUser.data?.role === USER_ROLE.INVESTOR && {
+          investor_profile: currentUser?.data?.investor_profile,
+        }),
       };
       dispatch({ type: "SET_AUTHORIZED", userData });
     }

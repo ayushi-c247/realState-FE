@@ -57,7 +57,7 @@ import { getNextTableHandlers, useListController } from "@/utils/table";
 import DataTableSkeleton from "@/components/Common/Loaders/DataTableSkeleton";
 
 import AddUser from "./AddUser";
-import { INVESTOR_AGENT_TABS, InvestorAgentTab } from "@/constants";
+import { INVESTOR_AGENT_TABS, InvestorAgentTab, UserStatus } from "@/constants";
 import { getFilterConfig } from "@/utils/filters";
 import { FILETR_ENTITIES } from "@/constants/common";
 
@@ -303,8 +303,7 @@ export default function UserList() {
                 </Text>
               </Box>
             </Menu.Item>
-            {record.status === "INACTIVE" &&
-              record.role === "PARENT" &&
+            {record.status === UserStatus.pending &&
               record.is_email_verified === false && (
                 <Menu.Item
                   onClick={() => handleResendInviation(record.id)}
@@ -352,14 +351,31 @@ export default function UserList() {
       title: "Approval Status",
       sortable: true,
       textAlign: "center" as const,
-      width: 350,
-
+      width: "350", // <-- string, not number
       render: (row: IUserList) => {
         const status =
           row.agent_profile?.approval_status || AgentApprovalStatusEnum.PENDING;
 
-        const isApproved = status === AgentApprovalStatusEnum.APPROVED;
-
+        const isUserActive = row.status === UserStatus.active;
+        if (!isUserActive) {
+          // User inactive → show badge only, no dropdown
+          return (
+            <Flex
+              justify="center"
+              align="center"
+              style={{
+                backgroundColor: "#FFFBE6",
+                color: "#8B6F00",
+                borderRadius: 16,
+                height: 35,
+                minWidth: "180px",
+                cursor: "default",
+              }}
+            >
+              {AgentApprovalStatusLabels[status]}
+            </Flex>
+          );
+        }
         return (
           <Menu>
             <Menu.Target>
@@ -414,8 +430,12 @@ export default function UserList() {
         return columns;
 
       case INVESTOR_AGENT_TABS.AGENT:
-        const arr = [...columns, ...agentApprovalColumn];
-        return arr;
+        const actionsIndex = columns.findIndex(
+          (col) => col.accessor === "actions"
+        );
+        // 2. Insert agentApprovalColumn before actions
+        columns.splice(actionsIndex, 0, ...agentApprovalColumn);
+        return columns;
       default:
         return [];
     }

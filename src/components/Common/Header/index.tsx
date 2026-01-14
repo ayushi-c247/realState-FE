@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { ActionIcon, Box, Flex, Group, Image, List, Text } from "@mantine/core";
+import { ActionIcon, Box, Flex, Image, List, Text } from "@mantine/core";
 import { useClickOutside, useMediaQuery } from "@mantine/hooks";
 import { IconChevronDown, IconChevronUp, IconMenu2 } from "@tabler/icons-react";
 import { USER_ROLE } from "@/constants";
@@ -71,8 +71,8 @@ function Header({ onToggleSidebar }: HeaderProps) {
             onClick={() => router.push("/dashboard")}
           >
             <Image
-              src="/skillsome-logo.svg"
-              alt="Skillsome Logo"
+              src="/real-state-logo.png"
+              alt="RealState Logo"
               h={"100%"}
               w={"100%"}
               fit="contain"

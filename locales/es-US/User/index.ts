@@ -89,6 +89,9 @@ const userManagement = {
   },
   details: {
     back: "Go Back",
+    title: "User Information",
+    personalDetails: "Personal Information",
+    profileInformation: "Profile Information",
   },
   profile: {
     title: "Complete Your Profile",
@@ -136,10 +139,14 @@ const userManagement = {
       license_number: "License number is required",
       license_number_min: "License number must be at least 5 characters long",
       license_number_max: "License number must not exceed 20 characters",
+      license_number_only_digits:
+        "Please enter digits only for the license number",
 
       contact_number: "Contact number is required",
       contact_number_min: "Contact number must be at least 10 digits long",
       contact_number_max: "Contact number must not exceed 20 digits",
+      contact_number_only_digits:
+        "Please enter digits only for the contact number",
 
       company_name: "Company name is required",
       company_name_min: "Company name must be at least 3 characters long",

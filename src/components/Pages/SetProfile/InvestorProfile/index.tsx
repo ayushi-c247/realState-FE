@@ -21,8 +21,7 @@ import { StepProperty } from "./PropertyPreferences";
 import { useAddInvestorProfileMutation } from "@/hooks/user/Details";
 import { StepRenovationWillingness } from "./RenovationWillingness";
 import { useEffect, useMemo } from "react";
-
-const STORAGE_KEY = "investorProfileFormData";
+import { STORAGE_KEY } from "@/constants/common";
 
 export const InvestorProfileForm = () => {
   const router = useRouter();
@@ -108,6 +107,7 @@ export const InvestorProfileForm = () => {
         message: "Profile submitted",
         color: "green",
       });
+      localStorage.removeItem(STORAGE_KEY);
       router.replace("/dashboard");
     } catch (error: any) {
       showNotification({

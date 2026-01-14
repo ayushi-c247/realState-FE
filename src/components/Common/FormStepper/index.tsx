@@ -38,17 +38,47 @@ export const FormStepper = <T extends FieldValues>({
 
       <Box mt="xl">
         {active > 0 && (
-          <Button onClick={prevStep}>{t_generic("buttons.back")}</Button>
+          <Button
+            ml="sm"
+            onClick={prevStep}
+            type="submit"
+            variant="gradient"
+            fullWidth
+            mt="xl"
+            className="gradiant-button"
+            radius="var(--radius-xxl)"
+            size="md"
+          >
+            {t_generic("buttons.back")}
+          </Button>
         )}
 
         {active < steps.length - 1 && (
-          <Button ml="sm" onClick={nextStep}>
+          <Button
+            ml="sm"
+            onClick={nextStep}
+            type="submit"
+            variant="gradient"
+            fullWidth
+            mt="xl"
+            className="gradiant-button"
+            radius="var(--radius-xxl)"
+            size="md"
+          >
             {t_generic("buttons.next")}
           </Button>
         )}
 
         {active === steps.length - 1 && (
-          <Button ml="sm" type="submit">
+          <Button
+            type="submit"
+            variant="gradient"
+            fullWidth
+            mt="xl"
+            className="gradiant-button"
+            radius="var(--radius-xxl)"
+            size="md"
+          >
             {t_generic("buttons.submit")}
           </Button>
         )}
