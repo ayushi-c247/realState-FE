@@ -78,7 +78,6 @@ function AccountSettings() {
     defaultValues: {
       first_name: userData?.first_name,
       last_name: userData?.last_name,
-      email: userData?.email,
     },
   });
 
@@ -86,7 +85,6 @@ function AccountSettings() {
     if (userDetails) {
       setValue("first_name", userDetails.first_name ?? "");
       setValue("last_name", userDetails.last_name ?? "");
-      setValue("email", userDetails.email ?? "");
     }
   }, [userDetails, setValue, userData?.role]);
 
@@ -103,7 +101,7 @@ function AccountSettings() {
       // Call update user API (this updates DB)
       const res = await updateUserDetails({
         id: userData?.id,
-        input: payload as any,
+        input: payload,
       });
 
       showNotification({
@@ -232,56 +230,11 @@ function AccountSettings() {
                           >
                             {userDetails?.email}
                           </Text>
-                          {role === USER_ROLE.INVESTOR && (
-                            <Text
-                              component="strong"
-                              c="var(--text-color)"
-                              fz={12}
-                              fw={400}
-                              lts="0.3px"
-                            >
-                              {tAccountSettings("parentProfileBelowText")}
-                              <a
-                                href={`${process.env.NEXT_PUBLIC_MAIN_SITE_URL}/contact-us`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                title={`${process.env.NEXT_PUBLIC_MAIN_SITE_URL}/contact-us`} // shows on hover
-                                style={{
-                                  color: "var(--primary-color)", // optional styling
-                                  textDecoration: "underline",
-                                  cursor: "pointer",
-                                }}
-                              >
-                                Support
-                              </a>
-                              .
-                            </Text>
-                          )}
-                          {!(
-                            role === USER_ROLE.ADMIN ||
-                            role === USER_ROLE.INVESTOR
-                          ) && (
-                            <Text
-                              component="strong"
-                              c="var(--text-color)"
-                              fz={12}
-                              fw={400}
-                              lts="0.3px"
-                            >
-                              {tAccountSettings("needChanges")}
-                              {role === USER_ROLE.ADMIN
-                                ? tAccountSettings("emailAddress")
-                                : tAccountSettings("username")}
-                              , please
-                              {tAccountSettings("contactParent")}
-                            </Text>
-                          )}
                         </Box>
                       </Flex>
                     </Grid.Col>
 
                     <>
-                      {/* Parent/Admin/Expert fields */}
                       <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 4 }}>
                         <TextInput
                           withAsterisk

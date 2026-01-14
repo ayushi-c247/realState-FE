@@ -3,30 +3,36 @@
 import { TextInput, Button, Box } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useTranslations } from "next-intl";
 
-import { useAuth } from "@/lib/Contexts/AuthProvider";
 import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import { paths } from "@/routes";
 
 import { agentProfileSchema } from "@/constants/validationSchemas/user";
+import { useAddAgentProfileMutation } from "@/hooks/user/Details";
+import { AgentProfileFormValues } from "@/types/User/Details";
 
 export const AgentProfileForm = () => {
   const router = useRouter();
+  const tUser = useTranslations("userManagement");
+  const { mutateAsync: addProfile, isPending } = useAddAgentProfileMutation();
 
-  // const { mutateAsync, isPending } = useCreateUserProfileMutation();
+  const { register, handleSubmit, formState } = useForm<AgentProfileFormValues>(
+    {
+      resolver: yupResolver(agentProfileSchema(tUser)),
+      mode: "all",
+      reValidateMode: "onSubmit",
+    }
+  );
 
-  const { register, handleSubmit, formState } = useForm({
-    resolver: yupResolver(agentProfileSchema),
-  });
+  const onSubmit = async (data: AgentProfileFormValues) => {
+    console.log("data", data);
 
-  const onSubmit = async (data: any) => {
     try {
-      //   await mutateAsync({
-      //     user_id: userData.id,
-      //     role: USER_ROLE.AGENT,
-      //     data,
-      //   });
+      await addProfile({
+        input: data,
+      });
 
       showNotification({
         title: "Success",
@@ -67,8 +73,13 @@ export const AgentProfileForm = () => {
       />
 
       <Box mt="xl">
-        <Button type="submit" fullWidth>
-          Save Profile
+        <Button
+          type="submit"
+          fullWidth
+          disabled={isPending}
+          loading={isPending}
+        >
+          {tUser("profile.saveAgentProfile")}
         </Button>
       </Box>
     </form>

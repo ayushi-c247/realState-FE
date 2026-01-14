@@ -1,3 +1,6 @@
+import { investorProfileSchema } from "@/constants/validationSchemas/user";
+import { AgentApprovalStatusEnum } from "@/types/User";
+import type { InferType } from "yup";
 export interface IAddUser {
   first_name: string;
   last_name: string;
@@ -15,6 +18,16 @@ export interface IAddUserResponse {
   message: string;
   data?: IAddUserPayload;
 }
+export interface IAddInvestorProfileResponse {
+  success: boolean;
+  message: string;
+  data?: InvestorProfileFormValues;
+}
+export interface IAddAgentProfileResponse {
+  success: boolean;
+  message: string;
+  data?: AgentProfileFormValues;
+}
 
 export interface IGetUserParams {
   page: number;
@@ -28,7 +41,6 @@ export interface IGetUserParams {
 export interface IUpdateUserPayload {
   first_name: string;
   last_name: string;
-  email: string;
 }
 
 export interface IResendInvitationResponse {
@@ -68,6 +80,12 @@ export interface IUserUpdate {
     status: "ACTIVE" | "INACTIVE";
   };
 }
+export interface IAgentApprovalStatusUpdate {
+  id: number;
+  input: {
+    status: AgentApprovalStatusEnum;
+  };
+}
 
 export interface IUserUpdateResponse {
   success: boolean;
@@ -96,15 +114,24 @@ export interface IResendInvitationPayload {
   user_id: number;
 }
 
-export interface InvestorProfileForm {
-  risk_tolerance: string;
-  budget_min: number;
-  budget_max: number;
-  preferred_property_types: string[];
-}
-
-export interface AgentProfileForm {
+export interface AgentProfileFormValues {
   company_name: string;
   contact_number: string;
   license_number: string;
 }
+export type BudgetUnit = "LAKH" | "CRORE";
+export type InvestorProfileFormValues = {
+  budget_min: number;
+  budget_max: number;
+  budget_unit: BudgetUnit;
+  risk_tolerance: string;
+  investment_horizon: string;
+  primary_objective: string;
+  ownership_structure: string;
+  country: string;
+  state: string;
+  cities: string[];
+  preferred_property_types: string;
+  tourism_preferences: string;
+  renovation_willingness: string;
+};

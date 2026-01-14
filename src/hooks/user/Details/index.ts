@@ -18,12 +18,17 @@ import {
   IUpdateUserResponse,
   IResendInvitationResponse,
   IResendInvitationPayload,
+  InvestorProfileFormValues,
+  IAddInvestorProfileResponse,
+  AgentProfileFormValues,
+  IAddAgentProfileResponse,
+  IAgentApprovalStatusUpdate,
 } from "@/types/User/Details";
 
 import { IUserListResponse } from "@/types/User";
 import { IUpdatePassword } from "@/types/Profile";
 
-const userDetail = new ListService();
+const userService = new ListService();
 
 export const USER = {
   LIST: "user-list",
@@ -34,7 +39,7 @@ export const USER = {
 export const useGetAllUserDataQuery = (params: IGetUserParams) => {
   return useQuery<IUserListResponse>({
     queryKey: [USER.LIST, params],
-    queryFn: () => userDetail.getAllUser(params),
+    queryFn: () => userService.getAllUser(params),
     enabled: !!params,
     refetchOnWindowFocus: false,
   });
@@ -47,7 +52,7 @@ export const useUpdateUserMutation = (): UseMutationResult<
 > => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, input }) => userDetail.updateUser(id, input),
+    mutationFn: ({ id, input }) => userService.updateUser(id, input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [USER.USER] });
       queryClient.invalidateQueries({ queryKey: [USER.DETAIL] });
@@ -62,7 +67,7 @@ export const useUpdateUserMutation = (): UseMutationResult<
 export const useGetUserDetailsByIdQuery = (params: IUserDetailsID) => {
   return useQuery({
     queryKey: [USER.DETAIL, params],
-    queryFn: () => userDetail.getUserById(params.id),
+    queryFn: () => userService.getUserById(params.id),
     enabled:
       !!params.id &&
       (params.role === USER_ROLE.ADMIN || params.role === USER_ROLE.INVESTOR),
@@ -77,7 +82,7 @@ export const useDeleteUserMutation = (): UseMutationResult<
 > => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id }) => userDetail.deleteUser(id),
+    mutationFn: ({ id }) => userService.deleteUser(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [USER.LIST] });
     },
@@ -93,10 +98,36 @@ export const useAddUserMutation = (): UseMutationResult<
   { id: number | undefined; input: IAddUserPayload }
 > => {
   return useMutation({
-    mutationFn: ({ id, input }) => userDetail.addUser(id, input),
+    mutationFn: ({ id, input }) => userService.addUser(id, input),
     onSuccess: () => {},
     onError: (error) => {
       console.error("Update user failed:", error);
+    },
+  });
+};
+export const useAddInvestorProfileMutation = (): UseMutationResult<
+  IAddInvestorProfileResponse,
+  Error,
+  { input: InvestorProfileFormValues }
+> => {
+  return useMutation({
+    mutationFn: ({ input }) => userService.addInvestorProfile(input),
+    onSuccess: () => {},
+    onError: (error) => {
+      console.error("Profile added failed:", error);
+    },
+  });
+};
+export const useAddAgentProfileMutation = (): UseMutationResult<
+  IAddAgentProfileResponse,
+  Error,
+  { input: AgentProfileFormValues }
+> => {
+  return useMutation({
+    mutationFn: ({ input }) => userService.addAgentProfile(input),
+    onSuccess: () => {},
+    onError: (error) => {
+      console.error("Profile added failed:", error);
     },
   });
 };
@@ -108,24 +139,41 @@ export const useUpdateStatusMutation = (): UseMutationResult<
 > => {
   const queryClient = useQueryClient();
   return useMutation<IUserUpdateResponse, Error, IUserUpdate>({
-    mutationFn: ({ id, input }) => userDetail.updateUserStatus(id, input),
+    mutationFn: ({ id, input }) => userService.updateUserStatus(id, input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [USER.LIST] });
     },
     onError: (error) => {
-      console.error("Update Expert failed:", error);
+      console.error("Update user status failed:", error);
+    },
+  });
+};
+export const useUpdateAgentApprovalStatusMutation = (): UseMutationResult<
+  IUserUpdateResponse,
+  Error,
+  IAgentApprovalStatusUpdate
+> => {
+  const queryClient = useQueryClient();
+  return useMutation<IUserUpdateResponse, Error, IAgentApprovalStatusUpdate>({
+    mutationFn: ({ id, input }) =>
+      userService.updateAgentApprovalStatus(id, input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [USER.LIST] });
+    },
+    onError: (error) => {
+      console.error("Update agent status failed:", error);
     },
   });
 };
 
 export const useUpdatePasswordMutation = (): UseMutationResult<
-  Awaited<ReturnType<typeof userDetail.updatePassword>>,
+  Awaited<ReturnType<typeof userService.updatePassword>>,
   Error,
   { payload: IUpdatePassword; token: string }
 > => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ payload }) => userDetail.updatePassword(payload),
+    mutationFn: ({ payload }) => userService.updatePassword(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [USER.DETAIL] });
     },
@@ -142,7 +190,7 @@ export const useResendInvitation = (): UseMutationResult<
 > => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ input }) => userDetail.resendInvitation(input),
+    mutationFn: ({ input }) => userService.resendInvitation(input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [USER.LIST] });
     },

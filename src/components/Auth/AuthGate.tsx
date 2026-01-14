@@ -21,15 +21,24 @@ const AuthGate = ({ children }: { children: React.ReactNode }) => {
     }
 
     if (!userData) return;
-
     const { role, status } = userData;
-
     if (
       (role === USER_ROLE.INVESTOR || role === USER_ROLE.AGENT) &&
       status === UserStatus.pending
     ) {
       if (pathname !== paths.ROOT_PROFILE) {
         router.replace(paths.ROOT_PROFILE);
+      }
+      return;
+    }
+    if (
+      [USER_ROLE.INVESTOR, USER_ROLE.ADMIN, USER_ROLE.AGENT].includes(
+        role as any
+      ) &&
+      status === UserStatus.active
+    ) {
+      if (pathname === paths.ROOT_PROFILE) {
+        router.replace(paths.ROOT_DASHBOARD);
       }
       return;
     }

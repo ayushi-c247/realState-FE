@@ -1,15 +1,16 @@
 "use client";
 
-import Select from "react-select";
 import { Title, Stack } from "@mantine/core";
+import Select from "react-select";
 import { Country, State, City } from "country-state-city";
+import { Controller } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 export const StepRegions = ({ form }: any) => {
-  const { setValue, watch, formState } = form;
-
+  const { control, watch, formState, trigger } = form;
+  const tUser = useTranslations("userManagement");
   const selectedCountry = watch("country");
   const selectedState = watch("state");
-  const selectedRegions = watch("preferred_regions") || [];
 
   // Country options
   const countryOptions = Country.getAllCountries().map((c) => ({
@@ -17,7 +18,7 @@ export const StepRegions = ({ form }: any) => {
     value: c.isoCode,
   }));
 
-  // State options (depends on country)
+  // State options
   const stateOptions = selectedCountry
     ? State.getStatesOfCountry(selectedCountry).map((s) => ({
         label: s.name,
@@ -25,7 +26,7 @@ export const StepRegions = ({ form }: any) => {
       }))
     : [];
 
-  // City options (depends on state)
+  // City / Regions options
   const cityOptions =
     selectedCountry && selectedState
       ? City.getCitiesOfState(selectedCountry, selectedState).map((c) => ({
@@ -35,56 +36,107 @@ export const StepRegions = ({ form }: any) => {
       : [];
 
   return (
-    <>
-      <Title order={4}>Preferred Regions</Title>
+    <Stack mt="md">
+      <Title order={4}>{tUser("profile.steps.preferredRegions.title")}</Title>
 
-      <Stack mt="md">
-        {/* Country */}
-        <Select
-          placeholder="Select Country"
-          options={countryOptions}
-          onChange={(v: any) => {
-            setValue("country", v?.value);
-            setValue("state", null);
-            setValue("preferred_regions", []);
+      {/* Country */}
+      <Controller
+        name="country"
+        control={control}
+        rules={{ required: "Please select a country" }}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={countryOptions}
+            value={countryOptions.find((c) => c.value === field.value) || null}
+            onChange={(v: any) => {
+              field.onChange(v?.value);
+              trigger(["country"]);
+            }}
+            placeholder={tUser(
+              "profile.steps.preferredRegions.countryPlaceholder"
+            )}
+          />
+        )}
+      />
+      {formState.errors.country && (
+        <p style={{ color: "red", fontSize: 12 }}>
+          {formState.errors.country.message}
+        </p>
+      )}
+
+      {/* State */}
+      {selectedCountry && (
+        <Controller
+          name="state"
+          control={control}
+          rules={{ required: "Please select a state" }}
+          render={({ field }) => {
+            return (
+              <>
+                <Select
+                  {...field}
+                  options={stateOptions}
+                  value={
+                    stateOptions.find((s) => s.value === field.value) || null
+                  }
+                  onChange={(v: any) => {
+                    field.onChange(v?.value);
+                    trigger(["state"]);
+                  }}
+                  placeholder={tUser(
+                    "profile.steps.preferredRegions.statePlaceholder"
+                  )}
+                />
+                {formState.errors.state && (
+                  <p style={{ color: "red", fontSize: 12 }}>
+                    {formState.errors.state.message}
+                  </p>
+                )}
+              </>
+            );
           }}
         />
+      )}
 
-        {/* State */}
-        {selectedCountry && (
-          <Select
-            placeholder="Select State"
-            options={stateOptions}
-            onChange={(v: any) => {
-              setValue("state", v?.value);
-              setValue("preferred_regions", []);
-            }}
-          />
-        )}
-
-        {/* City */}
-        {selectedState && (
-          <Select
-            isMulti
-            placeholder="Select Cities"
-            options={cityOptions}
-            value={cityOptions.filter((c) => selectedRegions.includes(c.value))}
-            onChange={(v: any) =>
-              setValue(
-                "preferred_regions",
-                v.map((item: any) => item.value),
-                { shouldValidate: true }
-              )
-            }
-          />
-        )}
-
-        {formState.errors.preferred_regions && (
-          <p style={{ color: "red", fontSize: 12 }}>
-            {formState.errors.preferred_regions.message}
-          </p>
-        )}
-      </Stack>
-    </>
+      {/* Cities / Preferred Regions */}
+      {selectedState && (
+        <Controller
+          name="cities"
+          control={control}
+          rules={{
+            validate: (val) =>
+              val && val.length > 0 ? true : "Select at least one region",
+          }}
+          render={({ field }) => {
+            return (
+              <>
+                <Select
+                  {...field}
+                  isMulti
+                  options={cityOptions}
+                  value={cityOptions.filter((c) =>
+                    (field.value || []).includes(c.value)
+                  )}
+                  onChange={(v: any) => {
+                    const values = v.map((item: any) => item.value);
+                    field.onChange(values);
+                    trigger("cities");
+                  }}
+                  placeholder={tUser(
+                    "profile.steps.preferredRegions.cityPlaceholder"
+                  )}
+                />
+                {formState.errors.cities && (
+                  <p style={{ color: "red", fontSize: 12 }}>
+                    {formState.errors.cities.message}
+                  </p>
+                )}
+              </>
+            );
+          }}
+        />
+      )}
+    </Stack>
   );
 };

@@ -5,6 +5,7 @@ import { header, sidebar } from "./Layout";
 import userManagement from "./User";
 import Components from "./Components";
 import filterMangement from "./Filters";
+import propertyManagement from "./Property";
 
 const esUS = {
   ...Auth,
@@ -15,6 +16,7 @@ const esUS = {
   ...Front,
   ...Components,
   ...filterMangement,
+  ...propertyManagement,
 };
 
 export default esUS;

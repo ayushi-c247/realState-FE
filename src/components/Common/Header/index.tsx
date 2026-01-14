@@ -164,27 +164,7 @@ function Header({ onToggleSidebar }: HeaderProps) {
                     </List.Item>
                   </>
                 )}
-                {role === USER_ROLE.INVESTOR && (
-                  <List.Item
-                    px={20}
-                    py={12}
-                    className="header-navigation"
-                    onClick={() => {
-                      router.push(paths.ROOT_ACCOUNT_SETTINGS);
-                    }}
-                  >
-                    <IconSetting size={20} color="var(--text-color)" />
-                    <Text
-                      component="span"
-                      fz={14}
-                      lh="20px"
-                      fw={500}
-                      c="var(--text-color)"
-                    >
-                      {t("menu.link.accountSetting")}
-                    </Text>
-                  </List.Item>
-                )}
+
                 <List.Item
                   px={20}
                   py={12}

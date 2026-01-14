@@ -3,6 +3,7 @@ export const paths = {
   ROOT_USER_MANAGEMENT: "/admin/user",
   ROOT_INVESTOR_MANAGEMENT: "/admin/user/investor",
   ROOT_AGENT_MANAGEMENT: "/admin/user/agent",
+  ROOT_PROPERTY_MANAGEMENT: "/properties",
   ROOT_DASHBOARD: "/dashboard",
   ROOT_LOGIN: "/login",
   ROOT_SIGNUP: "/signup",
