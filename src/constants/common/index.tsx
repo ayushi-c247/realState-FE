@@ -22,3 +22,4 @@ export const FILETR_ENTITIES = {
 } as const;
 
 export type EntityType = (typeof FILETR_ENTITIES)[keyof typeof FILETR_ENTITIES];
+export const STORAGE_KEY = "investorProfileFormData";

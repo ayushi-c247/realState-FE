@@ -1,7 +1,7 @@
 export const USER_ROLE = {
   INVESTOR: "INVESTOR",
   ADMIN: "ADMIN",
-  AGENT: "AGENET",
+  AGENT: "AGENT",
 } as const;
 
 // Add Investor Agent Management Tab Constants

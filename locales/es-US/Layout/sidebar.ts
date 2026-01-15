@@ -3,6 +3,7 @@ const sidebar = {
     labels: {
       dashboard: "Dashboard",
       userManagement: "User Management",
+      propertyManagement: "Property Management",
       setting: "Account Settings",
       accountSettings: "Account Settings",
       logout: "Logout",

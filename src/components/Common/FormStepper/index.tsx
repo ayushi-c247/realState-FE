@@ -1,16 +1,30 @@
 "use client";
 
-import { CommonFormStepperProps } from "@/types";
-import { Stepper, Button, Box } from "@mantine/core";
 import { useState } from "react";
+import { FieldValues } from "react-hook-form";
+import { Stepper, Button, Box } from "@mantine/core";
 
-export const FormStepper = ({ steps, onSubmit }: CommonFormStepperProps) => {
+import { CommonFormStepperProps } from "@/types";
+import { useTranslations } from "next-intl";
+
+export const FormStepper = <T extends FieldValues>({
+  steps,
+  form,
+}: CommonFormStepperProps<T>) => {
+  const t_generic = useTranslations("generic");
   const [active, setActive] = useState(0);
 
-  const nextStep = () =>
-    setActive((current) => Math.min(current + 1, steps.length));
+  const nextStep = async () => {
+    const currentStepFields = steps[active].fields;
+    const isValid = currentStepFields.length
+      ? await form.trigger(currentStepFields)
+      : true;
 
-  const prevStep = () => setActive((current) => Math.max(current - 1, 0));
+    if (!isValid) return;
+    setActive((prev) => prev + 1);
+  };
+
+  const prevStep = () => setActive((prev) => prev - 1);
 
   return (
     <>
@@ -20,24 +34,52 @@ export const FormStepper = ({ steps, onSubmit }: CommonFormStepperProps) => {
             {step.component}
           </Stepper.Step>
         ))}
-
-        <Stepper.Completed>
-          {steps[steps.length - 1].component}
-        </Stepper.Completed>
       </Stepper>
 
       <Box mt="xl">
-        {active > 0 && <Button onClick={prevStep}>Back</Button>}
+        {active > 0 && (
+          <Button
+            ml="sm"
+            onClick={prevStep}
+            type="submit"
+            variant="gradient"
+            fullWidth
+            mt="xl"
+            className="gradiant-button"
+            radius="var(--radius-xxl)"
+            size="md"
+          >
+            {t_generic("buttons.back")}
+          </Button>
+        )}
 
         {active < steps.length - 1 && (
-          <Button ml="sm" onClick={nextStep}>
-            Next
+          <Button
+            ml="sm"
+            onClick={nextStep}
+            type="submit"
+            variant="gradient"
+            fullWidth
+            mt="xl"
+            className="gradiant-button"
+            radius="var(--radius-xxl)"
+            size="md"
+          >
+            {t_generic("buttons.next")}
           </Button>
         )}
 
         {active === steps.length - 1 && (
-          <Button ml="sm" onClick={onSubmit}>
-            Submit
+          <Button
+            type="submit"
+            variant="gradient"
+            fullWidth
+            mt="xl"
+            className="gradiant-button"
+            radius="var(--radius-xxl)"
+            size="md"
+          >
+            {t_generic("buttons.submit")}
           </Button>
         )}
       </Box>

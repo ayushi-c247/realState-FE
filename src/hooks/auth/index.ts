@@ -58,9 +58,6 @@ export const useLoginMutation = (): UseMutationResult<
       setInitialState(data.data);
       authorize(data.data);
     },
-    onError: (error) => {
-      console.error("Login failed:", error);
-    },
   });
 };
 
@@ -115,9 +112,6 @@ export const useResetPasswordMutation = (): UseMutationResult<
           });
         }
       }
-    },
-    onError: (error) => {
-      console.error("Password reset failed:", error);
     },
   });
 };

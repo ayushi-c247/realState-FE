@@ -3,38 +3,45 @@
 import { TextInput, Button, Box } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useTranslations } from "next-intl";
 
-import { useAuth } from "@/lib/Contexts/AuthProvider";
 import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import { paths } from "@/routes";
 
 import { agentProfileSchema } from "@/constants/validationSchemas/user";
+import { useAddAgentProfileMutation } from "@/hooks/user/Details";
+import { AgentProfileFormValues } from "@/types/User/Details";
+import { AgentApprovalStatusEnum } from "@/types/User";
 
 export const AgentProfileForm = () => {
   const router = useRouter();
+  const tUser = useTranslations("userManagement");
+  const { mutateAsync: addProfile, isPending } = useAddAgentProfileMutation();
 
-  // const { mutateAsync, isPending } = useCreateUserProfileMutation();
+  const { register, handleSubmit, formState } = useForm<AgentProfileFormValues>(
+    {
+      resolver: yupResolver(agentProfileSchema(tUser)),
+      mode: "all",
+      reValidateMode: "onSubmit",
+    }
+  );
 
-  const { register, handleSubmit, formState } = useForm({
-    resolver: yupResolver(agentProfileSchema),
-  });
-
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: AgentProfileFormValues) => {
     try {
-      //   await mutateAsync({
-      //     user_id: userData.id,
-      //     role: USER_ROLE.AGENT,
-      //     data,
-      //   });
-
+      const { message, data: response } = await addProfile({
+        input: data,
+      });
       showNotification({
         title: "Success",
-        message: "Agent profile created successfully",
+        message,
         color: "green",
       });
-
-      router.replace(paths.ROOT_DASHBOARD);
+      if (response?.approve_status === AgentApprovalStatusEnum.APPROVED) {
+        router.replace(paths.ROOT_DASHBOARD);
+        return;
+      }
+      router.replace(paths.ROOT_LOGIN);
     } catch (error: any) {
       showNotification({
         title: "Error",
@@ -67,8 +74,17 @@ export const AgentProfileForm = () => {
       />
 
       <Box mt="xl">
-        <Button type="submit" fullWidth>
-          Save Profile
+        <Button
+          type="submit"
+          variant="gradient"
+          fullWidth
+          mt="xl"
+          disabled={isPending}
+          className="gradiant-button"
+          radius="var(--radius-xxl)"
+          size="md"
+        >
+          {tUser("profile.saveAgentProfile")}
         </Button>
       </Box>
     </form>

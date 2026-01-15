@@ -1,3 +1,5 @@
+import { FieldValues, Path, UseFormReturn } from "react-hook-form";
+
 export interface EmptyStateProps {
   image?: string;
   heading: string;
@@ -48,12 +50,14 @@ export interface PaginationBarProps {
   labelPerPage: string;
 }
 
-export type StepConfig = {
+export type StepConfig<T> = {
   label: string;
-  component?: React.ReactNode;
+  component: React.ReactNode;
+  fields: Path<T>[]; // IMPORTANT
+  isCompleted?: boolean;
 };
 
-export type CommonFormStepperProps = {
-  steps: StepConfig[];
-  onSubmit: () => void;
+export type CommonFormStepperProps<T extends FieldValues> = {
+  steps: StepConfig<T>[];
+  form: UseFormReturn<T>;
 };

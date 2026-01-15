@@ -1,8 +1,9 @@
 import { Title, Box } from "@mantine/core";
+import { useTranslations } from "next-intl";
 
 export const StepReview = ({ form }: any) => {
   const values = form.getValues();
-
+  const tUser = useTranslations("userManagement");
   return (
     <>
       <Title order={4}>Review Your Investment Profile</Title>

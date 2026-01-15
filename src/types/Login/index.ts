@@ -20,6 +20,14 @@ export interface ILoginResponse {
     full_name: string;
     id: number;
     status: string;
+    agent_profile?: {
+      id: number;
+      approval_status: string;
+      company_name: string;
+    };
+    investor_profile?: {
+      id: number;
+    };
   };
 }
 
@@ -45,6 +53,14 @@ export interface IAPIUser {
   last_name: string;
   full_name: string;
   status: string;
+  agent_profile?: {
+    id: number;
+    approval_status: string;
+    company_name: string;
+  };
+  investor_profile?: {
+    id: number;
+  };
 }
 
 export interface IAuthState {

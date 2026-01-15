@@ -89,9 +89,69 @@ const userManagement = {
   },
   details: {
     back: "Go Back",
+    title: "User Information",
+    personalDetails: "Personal Information",
+    profileInformation: "Profile Information",
   },
   profile: {
     title: "Complete Your Profile",
+    saveAgentProfile: "Save Profile",
+    steps: {
+      investmentBudget: "Investment Budget",
+      primaryInvestmentObjective: "Primary Investment Objective",
+      propertyPreferences: {
+        title: "Property Preferences",
+        preferredPropertyTypes: "Preferred Property Types",
+        ownershipStructure: "Ownership Structure",
+        ownershipStructurePlaceholder: "Select Ownership Structure",
+        preferredPropertyTypesPlaceholder: "Select Property Types",
+      },
+      preferredRegions: {
+        title: "Preferred Regions",
+        countryPlaceholder: "Select Country",
+        statePlaceholder: "Select State",
+        cityPlaceholder: "Select City",
+      },
+    },
+    investorProfile: {
+      budget_unit: "Budget unit is required",
+      budget_min: "Minimum Budget is required",
+      budget_min_greater: "Must be greater than zero",
+      budget_min_exceed: "Minimum cannot exceed 500 Crores",
+      budget_max: "Maximum Budget is required",
+      budget_max_greater: "Must be greater than zero",
+      budget_max_exceed: "Minimum cannot exceed 500 Crores",
+      budget_max_greater_equal:
+        "Maximum must be greater than or equal to Minimum",
+      risk_tolerance: "Risk Tolerance is required",
+      investment_horizon: "Investment Horizon is required",
+      primary_objective: "Primary Objective is required",
+      ownership_structure: "Ownership Structure is required",
+      preferred_regions: "Preferred Regions is required",
+      preferred_property_types: "Preferred Property Types is required",
+      tourism_preferences: "Tourism Preferences is required",
+      renovation_willingness: "Renovation willingness is required",
+      country: "Country is required",
+      state: "State is required",
+      city: "City is required",
+    },
+    agentProfile: {
+      license_number: "License number is required",
+      license_number_min: "License number must be at least 5 characters long",
+      license_number_max: "License number must not exceed 20 characters",
+      license_number_only_digits:
+        "Please enter digits only for the license number",
+
+      contact_number: "Contact number is required",
+      contact_number_min: "Contact number must be at least 10 digits long",
+      contact_number_max: "Contact number must not exceed 20 digits",
+      contact_number_only_digits:
+        "Please enter digits only for the contact number",
+
+      company_name: "Company name is required",
+      company_name_min: "Company name must be at least 3 characters long",
+      company_name_max: "Company name must not exceed 50 characters",
+    },
   },
 };
 

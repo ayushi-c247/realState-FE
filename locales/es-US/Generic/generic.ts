@@ -28,6 +28,7 @@ const generic = {
     verified: "Verified",
     unverified: "Unverified",
     ok: "OK",
+    back: "Back",
   },
   header: {
     menu: {

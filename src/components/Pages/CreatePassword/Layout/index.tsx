@@ -11,7 +11,7 @@ function LoginLayout({ children }: Readonly<{ children: React.ReactNode }>) {
       <div style={{ padding: "20px", textAlign: "center" }}>
         <Image
           src={logo}
-          alt="Skillsome logo"
+          alt="RealState logo"
           width={200}
           height={100}
           style={{ objectFit: "contain" }}

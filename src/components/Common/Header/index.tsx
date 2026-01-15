@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { ActionIcon, Box, Flex, Group, Image, List, Text } from "@mantine/core";
+import { ActionIcon, Box, Flex, Image, List, Text } from "@mantine/core";
 import { useClickOutside, useMediaQuery } from "@mantine/hooks";
 import { IconChevronDown, IconChevronUp, IconMenu2 } from "@tabler/icons-react";
 import { USER_ROLE } from "@/constants";
@@ -71,8 +71,8 @@ function Header({ onToggleSidebar }: HeaderProps) {
             onClick={() => router.push("/dashboard")}
           >
             <Image
-              src="/skillsome-logo.svg"
-              alt="Skillsome Logo"
+              src="/real-state-logo.png"
+              alt="RealState Logo"
               h={"100%"}
               w={"100%"}
               fit="contain"
@@ -164,27 +164,7 @@ function Header({ onToggleSidebar }: HeaderProps) {
                     </List.Item>
                   </>
                 )}
-                {role === USER_ROLE.INVESTOR && (
-                  <List.Item
-                    px={20}
-                    py={12}
-                    className="header-navigation"
-                    onClick={() => {
-                      router.push(paths.ROOT_ACCOUNT_SETTINGS);
-                    }}
-                  >
-                    <IconSetting size={20} color="var(--text-color)" />
-                    <Text
-                      component="span"
-                      fz={14}
-                      lh="20px"
-                      fw={500}
-                      c="var(--text-color)"
-                    >
-                      {t("menu.link.accountSetting")}
-                    </Text>
-                  </List.Item>
-                )}
+
                 <List.Item
                   px={20}
                   py={12}

@@ -37,8 +37,13 @@ import {
   useGetAllUserDataQuery,
   useResendInvitation,
   useUpdateStatusMutation,
+  useUpdateAgentApprovalStatusMutation,
 } from "@/hooks/user/Details";
-import { IUserList } from "@/types/User";
+import {
+  IUserList,
+  AgentApprovalStatusEnum,
+  AgentApprovalStatusLabels,
+} from "@/types/User";
 import { paths } from "@/routes";
 import {
   normalizeFiltersUtil,
@@ -52,7 +57,7 @@ import { getNextTableHandlers, useListController } from "@/utils/table";
 import DataTableSkeleton from "@/components/Common/Loaders/DataTableSkeleton";
 
 import AddUser from "./AddUser";
-import { INVESTOR_AGENT_TABS, InvestorAgentTab } from "@/constants";
+import { INVESTOR_AGENT_TABS, InvestorAgentTab, UserStatus } from "@/constants";
 import { getFilterConfig } from "@/utils/filters";
 import { FILETR_ENTITIES } from "@/constants/common";
 
@@ -65,8 +70,7 @@ export default function UserList() {
   });
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [userDetail, setUserDetail] = useState<IUserList | null>(null);
-  const [isEditUser, setIsEditUser] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<IUserList | null>(null);
+
   const searchParams = useSearchParams();
   const { page, pageSize } = useListController();
   const [filter, setFilter] = useState<Record<string, any>>({});
@@ -155,6 +159,8 @@ export default function UserList() {
 
   // user status update
   const { mutateAsync: updateUserStatus } = useUpdateStatusMutation();
+  const { mutateAsync: updateAgentApprovalStatus } =
+    useUpdateAgentApprovalStatusMutation();
   const { mutateAsync: deleteUser, isPending: isDeleting } =
     useDeleteUserMutation();
   const { mutateAsync: resendInvitation, isPending: isResendInvite } =
@@ -297,8 +303,7 @@ export default function UserList() {
                 </Text>
               </Box>
             </Menu.Item>
-            {record.status === "INACTIVE" &&
-              record.role === "PARENT" &&
+            {record.status === UserStatus.pending &&
               record.is_email_verified === false && (
                 <Menu.Item
                   onClick={() => handleResendInviation(record.id)}
@@ -317,12 +322,119 @@ export default function UserList() {
       ),
     },
   ];
+  const handleAgentApprovalChange = async (
+    status: AgentApprovalStatusEnum,
+    id: number
+  ) => {
+    try {
+      const { message } = await updateAgentApprovalStatus({
+        id,
+        input: { status },
+      });
+      showNotification({
+        color: "green",
+        title: "Success",
+        message: message,
+      });
+    } catch (error) {
+      showNotification({
+        color: "red",
+        title: "Error",
+        message: `${(error as Error).message}`,
+      });
+    }
+  };
+
+  const agentApprovalColumn = [
+    {
+      accessor: "agent_approval_status",
+      title: "Approval Status",
+      sortable: true,
+      textAlign: "center" as const,
+      width: "350", // <-- string, not number
+      render: (row: IUserList) => {
+        const status =
+          row.agent_profile?.approval_status || AgentApprovalStatusEnum.PENDING;
+
+        const isUserActive = row.status === UserStatus.active;
+        if (!isUserActive) {
+          // User inactive → show badge only, no dropdown
+          return (
+            <Flex
+              justify="center"
+              align="center"
+              style={{
+                backgroundColor: "#FFFBE6",
+                color: "#8B6F00",
+                borderRadius: 16,
+                height: 35,
+                minWidth: "180px",
+                cursor: "default",
+              }}
+            >
+              {AgentApprovalStatusLabels[status]}
+            </Flex>
+          );
+        }
+        return (
+          <Menu>
+            <Menu.Target>
+              <Flex
+                justify="center"
+                align="center"
+                className={
+                  status === AgentApprovalStatusEnum.APPROVED
+                    ? "status-badge-active"
+                    : status === AgentApprovalStatusEnum.REJECTED
+                      ? "status-badge-inactive"
+                      : ""
+                }
+                style={
+                  status === AgentApprovalStatusEnum.PENDING
+                    ? {
+                        backgroundColor: "#FFFBE6",
+                        color: "#8B6F00",
+                        borderRadius: 16,
+                        height: 35,
+                        minWidth: "180px",
+                        cursor: "pointer",
+                      }
+                    : { cursor: "pointer" }
+                }
+              >
+                {AgentApprovalStatusLabels[status]}
+                <IconChevronDown size={14} style={{ marginLeft: 8 }} />
+              </Flex>
+            </Menu.Target>
+
+            <Menu.Dropdown miw={"180px"}>
+              {Object.values(AgentApprovalStatusEnum).map((value) => (
+                <Menu.Item
+                  key={value}
+                  ta="center"
+                  onClick={() => handleAgentApprovalChange(value, row.id)}
+                >
+                  {AgentApprovalStatusLabels[value]}
+                </Menu.Item>
+              ))}
+            </Menu.Dropdown>
+          </Menu>
+        );
+      },
+    },
+  ];
 
   const getColumns = () => {
     switch (activeTab) {
       case INVESTOR_AGENT_TABS.INVESTOR:
         return columns;
+
       case INVESTOR_AGENT_TABS.AGENT:
+        const actionsIndex = columns.findIndex(
+          (col) => col.accessor === "actions"
+        );
+        // 2. Insert agentApprovalColumn before actions
+        columns.splice(actionsIndex, 0, ...agentApprovalColumn);
         return columns;
       default:
         return [];

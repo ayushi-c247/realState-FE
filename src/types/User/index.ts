@@ -1,3 +1,9 @@
+export enum AgentApprovalStatusEnum {
+  APPROVED = "APPROVED",
+  PENDING = "PENDING",
+  REJECTED = "REJECTED",
+}
+
 export interface IUserList {
   id: number;
   first_name: string | null;
@@ -10,6 +16,10 @@ export interface IUserList {
   role: string;
   status: string;
   is_email_verified: boolean;
+  agent_profile?: {
+    user_id: number;
+    approval_status: AgentApprovalStatusEnum;
+  } | null;
 }
 
 export interface IUserListResponse {
@@ -47,3 +57,12 @@ export interface FailedDetail {
 export interface AlreadyExistsEntry {
   email: string;
 }
+
+export const AgentApprovalStatusLabels: Record<
+  AgentApprovalStatusEnum,
+  string
+> = {
+  [AgentApprovalStatusEnum.APPROVED]: "Approved",
+  [AgentApprovalStatusEnum.PENDING]: "Pending",
+  [AgentApprovalStatusEnum.REJECTED]: "Rejected",
+};

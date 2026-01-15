@@ -1,4 +1,8 @@
-import { IGetUserDetail, IUserListResponse } from "@/types/User";
+import {
+  AgentApprovalStatusEnum,
+  IGetUserDetail,
+  IUserListResponse,
+} from "@/types/User";
 import {
   IAddUserPayload,
   IAddUserResponse,
@@ -9,6 +13,10 @@ import {
   IUpdateUserResponse,
   IResendInvitationPayload,
   IResendInvitationResponse,
+  InvestorProfileFormValues,
+  IAddInvestorProfileResponse,
+  AgentProfileFormValues,
+  IAddAgentProfileResponse,
 } from "@/types/User/Details";
 import { API_ENDPOINTS } from "@/utils/endpoints";
 import http from "@/utils/protocol/http";
@@ -45,6 +53,17 @@ export class ListService {
       return http.post(`${API_ENDPOINTS.USER_ADD}`, payload);
     }
   }
+  async addInvestorProfile(
+    payload: InvestorProfileFormValues
+  ): Promise<IAddInvestorProfileResponse> {
+    return http.post(`${API_ENDPOINTS.INVESTOR_PROFILE}`, payload);
+  }
+
+  async addAgentProfile(
+    payload: AgentProfileFormValues
+  ): Promise<IAddAgentProfileResponse> {
+    return http.post(`${API_ENDPOINTS.AGENT_PROFILE}`, payload);
+  }
   async resendInvitation(
     payload: IResendInvitationPayload
   ): Promise<IResendInvitationResponse> {
@@ -56,6 +75,12 @@ export class ListService {
     payload: { status: "ACTIVE" | "INACTIVE" }
   ): Promise<IUserUpdateResponse> {
     return http.patch(`${API_ENDPOINTS.USER_UPDATE}/${id}`, payload);
+  }
+  async updateAgentApprovalStatus(
+    id: number,
+    payload: { status: AgentApprovalStatusEnum }
+  ): Promise<IUserUpdateResponse> {
+    return http.patch(`${API_ENDPOINTS.AGENT_UPDATE_STATUS}/${id}`, payload);
   }
 
   async updatePassword(

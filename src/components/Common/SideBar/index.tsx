@@ -289,7 +289,7 @@ export default function Sidebar({
             }}
           >
             <Image
-              src={_sidebarOpen ? "/real-state-logo.png" : "/BrandLogo.svg"}
+              src={_sidebarOpen ? "/real-state-logo.png" : "/real-state-logo.png"}
               alt="RealState Logo"
               width={_sidebarOpen ? 200 : 50}
               height={_sidebarOpen ? 100 : 50}
@@ -368,16 +368,16 @@ export default function Sidebar({
                     <NavLink
                       component={Link}
                       href={paths.ROOT_INVESTOR_MANAGEMENT}
-                      label={_sidebarOpen ? t("navLink.subLabels.investor") : ""}
+                      label={
+                        _sidebarOpen ? t("navLink.subLabels.investor") : ""
+                      }
                       className={`nav-sub-item ${activeUMRole === "investor" ? "active" : ""}`}
                     />
 
                     <NavLink
                       component={Link}
                       href={paths.ROOT_AGENT_MANAGEMENT}
-                      label={
-                        _sidebarOpen ? t("navLink.subLabels.agent") : ""
-                      }
+                      label={_sidebarOpen ? t("navLink.subLabels.agent") : ""}
                       className={`nav-sub-item ${activeUMRole === "agent" ? "active" : ""}`}
                     />
                   </NavLink>
@@ -395,6 +395,16 @@ export default function Sidebar({
                       },
                     ])}
                 </Box>
+                {/* Property Management */}
+                <NavLink
+                  component={Link}
+                  href={paths.ROOT_PROPERTY_MANAGEMENT}
+                  label={
+                    _sidebarOpen ? t("navLink.labels.propertyManagement") : ""
+                  }
+                  leftSection={<IconSettings />}
+                  className={`nav-item ${isActive(paths.ROOT_PROPERTY_MANAGEMENT) ? "active" : ""}`}
+                />
               </>
             )}
           </Stack>

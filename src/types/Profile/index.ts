@@ -25,11 +25,14 @@ export interface IUpdateProfileResponse {
 }
 
 export interface FailedDetail {
-  // Define the structure of failedDetails if known, here's a placeholder
-  // Example: field: string; message: string;
   [key: string]: any;
 }
 
 export interface AlreadyExistsEntry {
   email: string;
 }
+
+export type BudgetUnitOption = {
+  label: string;
+  value: "LAKH" | "CRORE";
+};
